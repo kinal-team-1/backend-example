@@ -1,6 +1,10 @@
 name: Check Backend
 
 on:
+  # I want to run this workflow manually too
+  workflow_dispatch:
+
+  # on every pull request to develop or master
   pull_request:
     branches:
       - develop
