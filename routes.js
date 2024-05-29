@@ -33,6 +33,10 @@ app.use(printLanguage);
 
 app.use("/user", userRoutes);
 
+app.get("/hello", (req, res) => {
+  res.status(StatusCodes.OK).json({ message: "Hello World", data: undefined });
+});
+
 app.get("/", (req, res) => {
   res.status(StatusCodes.OK).json({ message: "Hello World", data: undefined });
 });
