@@ -6,7 +6,7 @@ import { retrieveLocale } from "../middleware/retrieve-locale.js";
 import User, { ACTIVE } from "./user.model.js";
 import { UserAlreadyExist } from "./user.error.js";
 import { message } from "../utils/message.js";
-// import dbConnection from "../db/db-connection.js";
+
 const router = Router();
 
 router

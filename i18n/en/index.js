@@ -50,6 +50,7 @@ const en = {
   INVALID_MONGO_ID: "Invalid mongo id",
   INVALID_OPTIONAL_PAGE: "If provided, page must be an integer",
   INVALID_OPTIONAL_LIMIT: "If provided, limit must be an integer",
+  INTERNAL_SERVER_ERROR: "Internal server error",
 };
 
 export default en;

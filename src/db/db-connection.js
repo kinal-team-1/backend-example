@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 export default async function dbConnection() {
+  console.log({
+    MONGO_URL: process.env.MONGO_URL,
+    PORT: process.env.PORT,
+    NODE_ENV: process.env.NODE_ENV,
+  });
   try {
     mongoose.connection.on("error", () => {
       console.log("MongoDB | could not be connect to mongodb");
