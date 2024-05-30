@@ -36,6 +36,23 @@ const en = {
   DB_DESCRIPTION_REQUIRED: "The description is required",
   DB_PRICE_REQUIRED: "The price is required",
   DB_STOCK_REQUIRED: "The stock is required",
+  INVALID_USER_EMAIL: "Email is invalid",
+  INVALID_USER_PASSWORD:
+    "Password is invalid, must have at least 8 characters," +
+    "1 lowercase, 1 uppercase, 1 number and 1 symbol",
+  INVALID_USER_NAME: "Name is invalid, must have at least 3 characters",
+  INVALID_OPTIONAL_USER_EMAIL: "If provided, email must be a valid email",
+  INVALID_OPTIONAL_USER_PASSWORD:
+    "If provided, password must have at least 8 characters," +
+    "1 lowercase, 1 uppercase, 1 number and 1 symbol",
+  INVALID_OPTIONAL_USER_NAME:
+    "If provided, name must have at least 3 characters",
+  INVALID_MONGO_ID: "Invalid mongo id",
+  INVALID_OPTIONAL_PAGE: "If provided, page must be a positive integer",
+  INVALID_OPTIONAL_LIMIT: "If provided, limit must be a positive integer",
+  INTERNAL_SERVER_ERROR: "Internal server error",
+  USER_DELETED: "User deleted successfully",
+  USER_RETRIEVED_SUCCESSFULLY: "User retrieved successfully",
 };
 
 export default en;

@@ -1,35 +1,98 @@
 import { Router } from "express";
-import { getAllUsers } from "./user.controller.js";
-import { getTranslationFunctions } from "../utils/get-translations-locale.js";
-import { query } from "express-validator";
+import { getAllUsers, createUser, deleteUserById } from "./user.controller.js";
+import { body, query, param } from "express-validator"; // the 3 most important methods from express-validator
 import { validateChecks } from "../middleware/validate-checks.js";
 import { retrieveLocale } from "../middleware/retrieve-locale.js";
-// import dbConnection from "../db/db-connection.js";
+import User, { ACTIVE } from "./user.model.js";
+import { UserAlreadyExist } from "./user.error.js";
+import { message } from "../utils/message.js";
+
 const router = Router();
 
-router.get(
-  "/",
-  [
+router
+  .route("/")
+  .get(
+    [
+      retrieveLocale,
+      query("limit")
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage(message((LL) => LL.INVALID_OPTIONAL_LIMIT())) // If last check fails, this message will be shown
+        .toInt(), // // converts the value to an integer
+      query("page")
+        .optional()
+        .isInt({ min: 0 })
+        .withMessage(message((LL) => LL.INVALID_OPTIONAL_PAGE())) // If last check fails, this message will be shown
+        .toInt(), // Converts the value to an integer
+      validateChecks,
+    ],
+    getAllUsers,
+  )
+  .post(
+    [
+      retrieveLocale,
+      body("email")
+        .isEmail()
+        .withMessage(message((LL) => LL.INVALID_USER_EMAIL())) // If last check fails, this message will be shown
+        .custom((email) => {
+          // Check if the email already exists in the database
+          const user = User.findOne({ email, tp_status: ACTIVE });
+          if (!user) {
+            throw new UserAlreadyExist("Email already exists");
+          }
+        }),
+      body("password")
+        .isStrongPassword({
+          minLength: 8,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+        })
+        .withMessage(message((LL) => LL.INVALID_USER_PASSWORD())),
+      body("name")
+        .isString()
+        .isLength({ min: 3, max: 255 })
+        .withMessage(message((LL) => LL.INVALID_USER_NAME())),
+      validateChecks,
+    ],
+    createUser,
+  );
+
+router
+  .route("/:id")
+  .put([
     retrieveLocale,
-    query("limit")
+    body("email")
       .optional()
-      .isInt()
-      .withMessage((value, { req }) => {
-        const LL = getTranslationFunctions(req.locale);
-        return LL.DB_ACCOUNT_REQUIRED();
-      }) // If last check fails, this message will be shown
-      .toInt(), // // converts the value to an integer
-    query("page")
+      .isEmail()
+      .withMessage(message((LL) => LL.INVALID_OPTIONAL_USER_EMAIL())), // If last check fails, this message will be shown
+    body("password")
       .optional()
-      .isInt()
-      .withMessage((value, { req }) => {
-        const LL = getTranslationFunctions(req.locale);
-        return LL.DB_ACCOUNT_REQUIRED();
-      }) // If last check fails, this message will be shown
-      .toInt(), // Converts the value to an integer
+      .isStrongPassword({
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage(message((LL) => LL.INVALID_OPTIONAL_USER_PASSWORD())),
+    body("name")
+      .optional()
+      .isString()
+      .isLength({ min: 3, max: 255 })
+      .withMessage(message((LL) => LL.INVALID_OPTIONAL_USER_NAME())),
     validateChecks,
-  ],
-  getAllUsers,
-);
+  ])
+  .delete(
+    [
+      retrieveLocale,
+      param("id")
+        .isMongoId()
+        .withMessage(message((LL) => LL.INVALID_MONGO_ID())),
+      validateChecks,
+    ],
+    deleteUserById,
+  );
 
 export default router;
