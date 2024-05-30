@@ -48,9 +48,11 @@ const en = {
   INVALID_OPTIONAL_USER_NAME:
     "If provided, name must have at least 3 characters",
   INVALID_MONGO_ID: "Invalid mongo id",
-  INVALID_OPTIONAL_PAGE: "If provided, page must be an integer",
-  INVALID_OPTIONAL_LIMIT: "If provided, limit must be an integer",
+  INVALID_OPTIONAL_PAGE: "If provided, page must be a positive integer",
+  INVALID_OPTIONAL_LIMIT: "If provided, limit must be a positive integer",
   INTERNAL_SERVER_ERROR: "Internal server error",
+  USER_DELETED: "User deleted successfully",
+  USER_RETRIEVED_SUCCESSFULLY: "User retrieved successfully",
 };
 
 export default en;

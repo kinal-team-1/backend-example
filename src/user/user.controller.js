@@ -5,6 +5,9 @@ import { getTranslationFunctions } from "../utils/get-translations-locale.js";
 export const getAllUsers = async (req, res) => {
   const LL = getTranslationFunctions(req.locale);
   try {
+    // ULTRA NECESSARY TO USE DEFAULT VALUES
+    // TO AVOID CRASHES ON THE SERVER
+    // page = 0, limit = 0
     const { limit = 0, page = 0 } = req.query;
     const [total, users] = await Promise.all([
       User.countDocuments(),
@@ -14,7 +17,7 @@ export const getAllUsers = async (req, res) => {
     ]);
 
     res.status(StatusCodes.OK).json({
-      message: LL.DB_ACCOUNT_REQUIRED(),
+      message: LL.USER_RETRIEVED_SUCCESSFULLY(),
       data: users,
       total,
     });

@@ -16,12 +16,12 @@ router
       retrieveLocale,
       query("limit")
         .optional()
-        .isInt()
+        .isInt({ min: 0 })
         .withMessage(message((LL) => LL.INVALID_OPTIONAL_LIMIT())) // If last check fails, this message will be shown
         .toInt(), // // converts the value to an integer
       query("page")
         .optional()
-        .isInt()
+        .isInt({ min: 0 })
         .withMessage(message((LL) => LL.INVALID_OPTIONAL_PAGE())) // If last check fails, this message will be shown
         .toInt(), // Converts the value to an integer
       validateChecks,
